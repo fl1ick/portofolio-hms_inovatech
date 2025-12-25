@@ -41,7 +41,7 @@ export const NewPatient = ({ data, type }: DataProps) => {
   };
 
   const userId = user?.id;
-  const form = useForm<z.infer<typeof PatientFormSchema>>({
+  const form = useForm({
     resolver: zodResolver(PatientFormSchema),
     defaultValues: {
       ...userData,
@@ -49,7 +49,7 @@ export const NewPatient = ({ data, type }: DataProps) => {
       date_of_birth: new Date(),
       gender: "MALE",
       marital_status: "single",
-      emergency_contact_name: "",
+      emergency_contact_name: "", 
       emergency_contact_number: "",
       relation: "mother",
       blood_group: "",
