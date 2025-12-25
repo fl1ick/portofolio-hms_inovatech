@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { NoDataFound } from "../no-data-found";
@@ -21,7 +21,7 @@ export const DiagnosisContainer = async ({
 
   if (!userId) redirect("/sign-in");
 
-  const data = await db.medicalRecords.findFirst({
+  const data = await prisma.medicalRecords.findFirst({
     where: { appointment_id: Number(id) },
     include: {
       diagnosis: {

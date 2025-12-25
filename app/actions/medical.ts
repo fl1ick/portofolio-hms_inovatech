@@ -1,7 +1,7 @@
 "use server";
 
 import { DiagnosisFormData } from "@/components/dialogs/add-diagnosis";
-import db from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 import {
   DiagnosisSchema,
   PatientBillSchema,
@@ -19,7 +19,7 @@ export const addDiagnosis = async (
     let medicalRecord = null;
 
     if (!validatedData.medical_id) {
-      medicalRecord = await db.medicalRecords.create({
+      medicalRecord = await prisma.medicalRecords.create({
         data: {
           patient_id: validatedData.patient_id,
           doctor_id: validatedData.doctor_id,
@@ -29,7 +29,7 @@ export const addDiagnosis = async (
     }
 
     const med_id = validatedData.medical_id || medicalRecord?.id;
-    await db.diagnosis.create({
+    await prisma.diagnosis.create({
       data: {
         ...validatedData,
         medical_id: Number(med_id),
@@ -67,7 +67,7 @@ export async function addNewBill(data: any) {
     let bill_info = null;
 
     if (!data?.bill_id || data?.bill_id === "undefined") {
-      const info = await db.appointment.findUnique({
+      const info = await prisma.appointment.findUnique({
         where: { id: Number(data?.appointment_id)! },
         select: {
           id: true,
@@ -81,7 +81,7 @@ export async function addNewBill(data: any) {
       });
 
       if (!info?.bills?.length) {
-        bill_info = await db.payment.create({
+        bill_info = await prisma.payment.create({
           data: {
             appointment_id: Number(data?.appointment_id),
             patient_id: info?.patient_id!,
@@ -101,7 +101,7 @@ export async function addNewBill(data: any) {
       };
     }
 
-    await db.patientBills.create({
+    await prisma.patientBills.create({
       data: {
         bill_id: Number(bill_info?.id),
         service_id: Number(validatedData?.service_id),
@@ -133,7 +133,7 @@ export async function generateBill(data: any) {
       (Number(validatedData?.discount) / 100) *
       Number(validatedData?.total_amount);
 
-    const res = await db.payment.update({
+    const res = await prisma.payment.update({
       data: {
         bill_date: validatedData?.bill_date,
         discount: discountAmount,
@@ -142,7 +142,7 @@ export async function generateBill(data: any) {
       where: { id: Number(validatedData?.id) },
     });
 
-    await db.appointment.update({
+    await prisma.appointment.update({
       data: {
         status: "COMPLETED",
       },

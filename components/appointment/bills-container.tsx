@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { calculateDiscount } from "@/utils";
 import { checkRole } from "@/utils/roles";
 import { ReceiptText } from "lucide-react";
@@ -55,7 +55,7 @@ interface ExtendedBillProps extends PatientBills {
 }
 export const BillsContainer = async ({ id }: { id: string }) => {
   const [data, servicesData] = await Promise.all([
-    db.payment.findFirst({
+    prisma.payment.findFirst({
       where: { appointment_id: Number(id) },
       include: {
         bills: {
@@ -67,7 +67,7 @@ export const BillsContainer = async ({ id }: { id: string }) => {
         },
       },
     }),
-    db.services.findMany(),
+    prisma.services.findMany(),
   ]);
 
   let totalBills = 0;

@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { calculateBMI } from "@/utils";
 import { stat } from "fs";
@@ -28,7 +28,7 @@ export const VitalSigns = async ({
   patientId,
   doctorId,
 }: VitalSignsProps) => {
-  const data = await db.medicalRecords.findFirst({
+  const data = await prisma.medicalRecords.findFirst({
     where: { appointment_id: Number(id) },
     include: {
       vital_signs: {

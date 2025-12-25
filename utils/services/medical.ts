@@ -1,11 +1,11 @@
-import db from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 import { format } from "date-fns";
 
 export const getVitalSignData = async (id: string) => {
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-  const data = await db.vitalSigns.findMany({
+  const data = await prisma.vitalSigns.findMany({
     where: {
       patient_id: id,
       created_at: {

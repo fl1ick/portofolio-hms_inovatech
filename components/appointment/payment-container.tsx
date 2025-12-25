@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 import { Table } from "../tables/table";
 import { Payment } from "@prisma/client";
 import { format } from "date-fns";
@@ -52,7 +52,7 @@ export const PaymentsContainer = async ({
 }: {
   patientId: string;
 }) => {
-  const data = await db.payment.findMany({
+  const data = await prisma.payment.findMany({
     where: { patient_id: patientId },
   });
 
