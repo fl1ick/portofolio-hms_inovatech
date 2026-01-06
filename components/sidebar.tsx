@@ -104,12 +104,6 @@ export const Sidebar = async () => {
           icon: Users,
         },
         {
-          name: "Administer Medications",
-          href: "/nurse/administer-medications",
-          access: ["admin", "doctor", "nurse"],
-          icon: Pill,
-        },
-        {
           name: "Appointments",
           href: "/record/appointments",
           access: ["patient"],
